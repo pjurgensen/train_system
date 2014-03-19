@@ -1,10 +1,9 @@
 class Station
-  attr_reader :location, :id, :line_ids
+  attr_reader :location, :id
 
   def initialize(attributes)
     @location = attributes['location']
     @id = attributes['id'].to_i
-    @line_ids = []
   end
 
   def save
@@ -17,12 +16,16 @@ class Station
   end
 
   def create_stop(line_id)
-    DB.exec("INSERT INTO stops (station_id, line_id) VALUES (#{self.id}, #{line_id})")
-    @line_ids << line_id
+    DB.exec("INSERT INTO stops (station_id, line_id) VALUES (#{self.id}, #{line_id});")
   end
 
-  def lines_serving_station
-    DB.exec("SELECT * FROM lines JOIN stops ON stops.line_id = lines.id JOIN stations ON stations.id = stops.station_id WHERE stations.id = #{self.id};")
+  def self.lines_serving_station(station_id)
+    results = DB.exec("SELECT * FROM stops WHERE station_id = #{station_id};")
+    lines_serving = []
+    results.each do |result|
+      lines_serving << result['line_id'].to_i
+    end
+    lines_serving
   end
 
   def self.create(attributes)
@@ -38,6 +41,10 @@ class Station
       stations << Station.new(result)
     end
     stations
+  end
+
+  def update(new_location)
+    DB.exec("UPDATE stations SET location = '#{new_location}' WHERE id = #{self.id};")
   end
 
 end

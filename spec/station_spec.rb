@@ -41,22 +41,31 @@ describe Station do
     end
   end
 
-  # describe '#lines_serving_station' do
-  #   it 'shows the lines for a station' do
-  #     test_station = Station.create({'location' => 'Rose Quarter', 'id' => 2})
-  #     test_station
-  #   end
-  # end
+  describe '.lines_serving_station' do
+    it 'shows the lines for a station' do
+      test_station = Station.create({'location' => 'Rose Quarter', 'id' => 2})
+      test_line = Line.create({'name' => 'blue', 'id' => 1})
+      test_station.create_stop(test_line.id)
+      Station.lines_serving_station(test_station.id)[0].should be_an_instance_of Fixnum
+    end
+  end
 
   describe '#create_stop' do
     it 'assigns lines to a station' do
       test_station = Station.new({'location' => 'Rose Quarter', 'id' => 2})
       test_station.create_stop(1)
-      test_station.line_ids.should eq [1]
       result = DB.exec("SELECT * FROM stops WHERE station_id = #{test_station.id};")
       result[0]['line_id'].to_i.should eq 1
     end
   end
 
+  describe '#update' do
+    it 'updates the location of a station' do
+      test_station = Station.create({'location' => 'Rose Quarter', 'id' => 2})
+      test_station.update("Garden Quarter")
+      result = DB.exec("SELECT * FROM stations WHERE id = #{test_station.id}")
+      result[0]['location'].should eq "Garden Quarter"
+    end
+  end
 
 end
