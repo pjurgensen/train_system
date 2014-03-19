@@ -24,14 +24,18 @@ end
 def operator_menu
   system("clear")
   puts "Please enter 's' to add a new station"
+  puts "Please enter 'us' to update a station"
   puts "Please enter 'l' to add a new line"
+  puts "Please enter 'ul' to update a line"
   puts "Please enter 'm' to return to the main menu"
   puts "Please enter 'x' to exit"
   user_input = gets.chomp.downcase
 
   case user_input
     when 's' then add_station
+    when 'us' then update_station
     when 'l' then add_line
+    when 'ul' then update_line
     when 'm' then main_menu
     when 'x' then puts "See ya sucka"
     else puts "Please enter a valid option"
@@ -158,7 +162,7 @@ def list_stations_by_line(line_id)
     list_stations_by_line_menu
   end
   stations_served.each do |station|
-    puts "Station ##{station}" #ADD STATION NAME SOMEHOW - WITH A 'FIND_BY_ID' METHOD
+    puts "Station #{station.id}. #{station.location}"
   end
   puts "\n\n"
 end
@@ -188,7 +192,7 @@ def list_lines_by_station(station_id)
     list_lines_by_station_menu
   end
   available_lines.each do |line|
-    puts "Line ##{line}" #ADD LINE NAME SOMEHOW - WITH A 'FIND_BY_ID' METHOD
+    puts "Line #{line.id}. #{line.name}"
   end
   puts "\n\n"
 end

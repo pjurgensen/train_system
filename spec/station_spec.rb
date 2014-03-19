@@ -46,7 +46,7 @@ describe Station do
       test_station = Station.create({'location' => 'Rose Quarter', 'id' => 2})
       test_line = Line.create({'name' => 'blue', 'id' => 1})
       test_station.create_stop(test_line.id)
-      Station.lines_serving_station(test_station.id)[0].should be_an_instance_of Fixnum
+      Station.lines_serving_station(test_station.id)[0].should be_an_instance_of Line
     end
   end
 

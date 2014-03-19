@@ -12,10 +12,15 @@ class Line
   end
 
   def self.stations_served_by_line(line_id)
-    results = DB.exec("SELECT * FROM stops WHERE line_id = #{line_id};")
+    station_objects = DB.exec("SELECT * FROM stops WHERE line_id = #{line_id};")
     stops_served = []
-    results.each do |result|
-      stops_served << result['station_id'].to_i
+    station_ids_array = []
+    station_objects.each do |object|
+      station_ids_array << object['station_id'].to_i
+      results = DB.exec("SELECT * FROM stations WHERE id IN('#{station_ids_array.join(',')}');")
+      results.each do |result|
+        stops_served << Station.create(result)
+      end
     end
     stops_served
   end
