@@ -59,13 +59,22 @@ describe Line do
     end
   end
 
-  describe '#update' do
+  describe '.update' do
     it 'updates the name of a line' do
       test_line = Line.create({'name' => 'blue', 'id' => 1})
-      test_line.update("Red")
+      Line.update(test_line.id, "Red")
       result = DB.exec("SELECT * FROM lines WHERE id = #{test_line.id}")
       result[0]['name'].should eq "Red"
     end
   end
 
+  describe '.delete' do
+    it 'deletes a line' do
+      test_line1 = Line.create({'name' => 'red', 'id' => 1})
+      test_line2 = Line.create({'name' => 'blue', 'id' => 2})
+      Line.delete(test_line1.id)
+      result = DB.exec("SELECT * FROM lines;")
+      result[0]['name'].should eq 'blue'
+    end
+  end
 end

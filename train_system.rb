@@ -25,8 +25,10 @@ def operator_menu
   system("clear")
   puts "Please enter 's' to add a new station"
   puts "Please enter 'us' to update a station"
+  puts "Please enter 'ds' to delete a station"
   puts "Please enter 'l' to add a new line"
   puts "Please enter 'ul' to update a line"
+  puts "Please enter 'dl' to delete a line"
   puts "Please enter 'm' to return to the main menu"
   puts "Please enter 'x' to exit"
   user_input = gets.chomp.downcase
@@ -34,8 +36,10 @@ def operator_menu
   case user_input
     when 's' then add_station
     when 'us' then update_station
+    when 'ds' then delete_station
     when 'l' then add_line
     when 'ul' then update_line
+    when 'dl' then delete_line
     when 'm' then main_menu
     when 'x' then puts "See ya sucka"
     else puts "Please enter a valid option"
@@ -118,6 +122,58 @@ def add_line_to_station(new_station)
   end
 end
 
+def update_station
+  system("clear")
+  list_stations
+  puts "Please enter the station ID number for the station you would like to update:"
+  station_id = gets.chomp
+  puts "Enter the new location name:"
+  station_location = gets.chomp
+  begin
+    Station.update(station_id, station_location)
+  rescue
+    puts "Invalid ID - please try again!"
+    sleep(1)
+    update_station
+  end
+  puts "#{station_location} has been updated!"
+  puts "Would you like to update another station? Press 'y' for yes or 'n' for no"
+  user_input = gets.chomp.downcase
+
+  case user_input
+    when 'y' then update_station
+    when 'n' then operator_menu
+    else puts "Please enter a valid option"
+    sleep(1)
+    update_station
+  end
+end
+
+def delete_station
+  system("clear")
+  list_stations
+  puts "Please enter the station ID number for the station you would like to delete:"
+  station_id = gets.chomp
+  begin
+    Station.delete(station_id)
+  rescue
+    puts "Invalid ID - please try again!"
+    sleep(1)
+    update_station
+  end
+  puts "Station ##{station_id} has been successfully deleted."
+  puts "Would you like to delete another station? Press 'y' for yes or 'n' for no"
+  user_input = gets.chomp.downcase
+
+  case user_input
+    when 'y' then delete_station
+    when 'n' then operator_menu
+    else puts "Please enter a valid option"
+    sleep(1)
+    delete_station
+  end
+end
+
 def add_line
   system("clear")
   puts "Please enter the name of the new line"
@@ -134,6 +190,58 @@ def add_line
     else puts "Please enter a valid option"
     sleep(1)
     add_line
+  end
+end
+
+def update_line
+  system("clear")
+  list_lines
+  puts "Please enter the line ID number for the line you would like to update:"
+  line_id = gets.chomp
+  puts "Enter the new line name:"
+  line_name = gets.chomp
+  begin
+    Line.update(line_id, line_name)
+  rescue
+    puts "Invalid ID - please try again!"
+    sleep(1)
+    update_line
+  end
+  puts "#{line_name} has been updated!"
+  puts "Would you like to update another line? Press 'y' for yes or 'n' for no"
+  user_input = gets.chomp.downcase
+
+  case user_input
+    when 'y' then update_line
+    when 'n' then operator_menu
+    else puts "Please enter a valid option"
+    sleep(1)
+    update_line
+  end
+end
+
+def delete_line
+  system("clear")
+  list_lines
+  puts "Please enter the line ID number for the line you would like to delete:"
+  line_id = gets.chomp
+  begin
+    Line.delete(line_id)
+  rescue
+    puts "Invalid ID - please try again!"
+    sleep(1)
+    update_line
+  end
+  puts "Line ##{line_id} has been successfully deleted."
+  puts "Would you like to delete another line? Press 'y' for yes or 'n' for no"
+  user_input = gets.chomp.downcase
+
+  case user_input
+    when 'y' then delete_line
+    when 'n' then operator_menu
+    else puts "Please enter a valid option"
+    sleep(1)
+    delete_line
   end
 end
 

@@ -45,7 +45,11 @@ class Line
     self.name == another_line.name && self.id == another_line.id
   end
 
-  def update(new_name)
-    DB.exec("UPDATE lines SET name = '#{new_name}' WHERE id = #{self.id};")
+  def self.update(line_id, new_name)
+    DB.exec("UPDATE lines SET name = '#{new_name}' WHERE id = #{line_id};")
+  end
+
+  def self.delete(line_id)
+    DB.exec("DELETE FROM lines WHERE id = #{line_id};")
   end
 end

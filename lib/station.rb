@@ -48,9 +48,12 @@ class Station
     stations
   end
 
-  def update(new_location)
-    DB.exec("UPDATE stations SET location = '#{new_location}' WHERE id = #{self.id};")
+  def self.update(station_id, new_location)
+    DB.exec("UPDATE stations SET location = '#{new_location}' WHERE id = #{station_id};")
   end
 
+  def self.delete(station_id)
+    DB.exec("DELETE FROM stations WHERE id = #{station_id};")
+  end
 end
 

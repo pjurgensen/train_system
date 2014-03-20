@@ -59,13 +59,22 @@ describe Station do
     end
   end
 
-  describe '#update' do
+  describe '.update' do
     it 'updates the location of a station' do
       test_station = Station.create({'location' => 'Rose Quarter', 'id' => 2})
-      test_station.update("Garden Quarter")
-      result = DB.exec("SELECT * FROM stations WHERE id = #{test_station.id}")
+      Station.update(test_station.id, "Garden Quarter")
+      result = DB.exec("SELECT * FROM stations WHERE id = #{test_station.id};")
       result[0]['location'].should eq "Garden Quarter"
     end
   end
 
+  describe '.delete' do
+    it 'deletes a station' do
+      test_station1 = Station.create({'location' => 'Rose Quarter', 'id' => 2})
+      test_station2 = Station.create({'location' => 'Garden Quarter', 'id' => 3})
+      Station.delete(test_station1.id)
+      result = DB.exec("SELECT * FROM stations;")
+      result[0]['location'].should eq 'Garden Quarter'
+    end
+  end
 end
